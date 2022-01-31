@@ -1,19 +1,18 @@
 class IpsController < ApplicationController
   require 'net/http'
-  require 'json'
+
+  SOURCE = "https://get.geojs.io/v1/ip/geo/".freeze
 
   def index
-    @ips = Ip.by_country_and_city(params[:country], params[:city])
-    respond_to do |format|
-      format.json
-    end
+    @ips = Ip.by_country_and_city(filter_params[:country], filter_params[:city])
+    return @ips.to_json
   end
 
   def create
-    source = "https://get.geojs.io/v1/ip/geo/#{params[:ip]}.json"
-    resp = Net::HTTP.get_response(URI.parse(source))
+    uri_source = URI.parse("#{SOURCE}#{create_params[:ip]}.json")
+    resp = Net::HTTP.get_response(uri_source)
     result = JSON.parse(resp.body)
-    @ip = Ip.new(country: result['country'], city: result['city'], ip: params[:ip])
+    @ip = Ip.new(country: result['country'], city: result['city'], ip: create_params[:ip])
     if @ip.save
       json_response(@ip)
     else
@@ -23,7 +22,11 @@ class IpsController < ApplicationController
 
   private
 
-  def ip_params
-    params.permit(:ip, :country, :city)
+  def filter_params
+    params.permit(:country, :city)
+  end
+
+  def create_params
+    pramas.require(:ip)
   end
 end
