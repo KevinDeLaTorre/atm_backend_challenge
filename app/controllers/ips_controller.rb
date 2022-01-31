@@ -9,10 +9,10 @@ class IpsController < ApplicationController
   end
 
   def create
-    uri_source = URI.parse("#{SOURCE}#{create_params[:ip]}.json")
+    uri_source = URI.parse("#{SOURCE}#{create_params}.json")
     resp = Net::HTTP.get_response(uri_source)
     result = JSON.parse(resp.body)
-    @ip = Ip.new(country: result['country'], city: result['city'], ip: create_params[:ip])
+    @ip = Ip.new(country: result['country'], city: result['city'], ip: create_params)
     if @ip.save
       json_response(@ip)
     else
@@ -27,6 +27,6 @@ class IpsController < ApplicationController
   end
 
   def create_params
-    pramas.require(:ip)
+    params.require(:ip)
   end
 end
