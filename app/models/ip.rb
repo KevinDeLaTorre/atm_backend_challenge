@@ -9,8 +9,4 @@ class Ip < ApplicationRecord
     return where(city: city) if city
     all
   end
-
-  scope :filter_by_country, -> (country) { where country: country }
-  scope :filter_by_city,    -> (city) { where city: city }
-  scope :filter_by, -> (city) { where city: city }
 end
