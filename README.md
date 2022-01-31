@@ -1,24 +1,22 @@
-# README
+# ATM Backend Challenge
+**Description Given**
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+We want you to build a REST API (Ruby on Rails preferred). It will allow users to submit IP addresses. You will fetch the country/city from GeoJS and store them in server memory cache. A second end point should allow users to see all IP addresses tracked, and the data associated with it. The user should also be able to filter all IP addresses by country/city.
 
-Things you may want to cover:
+The IP addresses and their data don't need to be persisted to a database. Also the API should return JSON.
 
-* Ruby version
 
-* System dependencies
+**Setup**
 
-* Configuration
+```bundle install```
 
-* Database creation
+```rails db:migrate```
 
-* Database initialization
+```rails start```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+**API Calls**
+| Method | Path | Params | Description |
+| --- | --- | --- | --- |
+| GET | /ips | - | Returns a json of all ip addresses being tracked. |
+| GET | /ips | :country / :city | Filters index page and returns a json that includes either country/city or both if given. |
+| POST | /ips | :ip | Returns json of city/location of ip and saves to db. |
